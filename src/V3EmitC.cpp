@@ -3162,6 +3162,7 @@ void EmitCImp::emitInt(AstNodeModule* modp) {
 
     if (v3Global.opt.fault_injection()) { //fi
 	puts("#include <map>\n");
+    puts("#include <iostream>\n");
 	puts("#include <string>\n");
 	puts("#include <fstream>\n");
 	puts("#include <sstream>\n");
