@@ -3207,7 +3207,7 @@ puts("class fi_object : fi_object_base {\n");
 puts("  protected:\n");
 puts("    typedef fi_object<T> this_type;\n");
 puts("  public:\n");
-puts("    fi_object(const char* name = "") : fi_object_base(), m_value(T()), m_name(name) {\n");
+puts("    fi_object(const char* name = \"\") : fi_object_base(), m_value(T()), m_name(name) {\n");
 puts("      if (std::strlen(name) > 0) {\n");
 puts("      	std::string v(name);\n");
 puts("      }\n");
