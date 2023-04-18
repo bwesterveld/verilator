@@ -1920,9 +1920,6 @@ void EmitCStmts::emitVarDecl(const AstVar* nodep, const string& prefixIfImp) {
           else if (nodep->widthMin() <= 16) puts("fi_object<SData> ");
           else puts("fi_object<IData> ");
           puts(nodep->name());
-          puts("(\"");
-          puts(nodep->name());
-          puts("\")");
           puts(";\n");
   	  emitDeclArrayBrackets(nodep);
 
