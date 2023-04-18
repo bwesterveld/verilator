@@ -1922,7 +1922,7 @@ void EmitCStmts::emitVarDecl(const AstVar* nodep, const string& prefixIfImp) {
           puts(nodep->name());
           puts("(\"");
           puts(nodep->name());
-          puts("\")")
+          puts("\")");
           puts(";\n");
   	  emitDeclArrayBrackets(nodep);
 
