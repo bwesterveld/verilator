@@ -1932,10 +1932,17 @@ void EmitCStmts::emitVarDecl(const AstVar* nodep, const string& prefixIfImp) {
         std::string av_name_prefix2 = av_name.substr(0,12);
         std::string av_name_prefix3 = av_name.substr(0,7);
         std::string av_name_prefix4 = av_name.substr(0,6);
+        std::string av_name_prefix5 = av_name.substr(0,5);
+        /* Exclude all variables starting with these prefixes as we want only local
+         * signals. The last three cases were needed, because variables in the write
+         * and read byte functions were also overwritten with a fi_object, resulting
+         * in errors at compile time. 
+         */
         bool local_variable = (av_name_prefix == "__VinpClk__" || av_name_prefix2 == "__Vclklast__" 
                             || av_name_prefix2 == "__Vchglast__" || av_name == "__Vm_traceActivity" 
-                            || av_name_prefix3=="__Vtemp" || av_name_prefix4=="__Vdly" 
-                            || av_name_prefix4=="__Vilp");
+                            || av_name_prefix3 == "__Vtemp" || av_name_prefix4 == "__Vdly" 
+                            || av_name_prefix4 == "__Vilp" || av_name_prefix5 == "val__"
+                            || av_name_prefix3 == "other__" || av_name_prefix == "byte_addr__");
 
         if (v3Global.opt.fault_injection() && !local_variable && nodep->widthMin() <= 8 && last_char.substr(last_char.length()-1)!="]"  ){ //dummy solution to avoid multidimensional arrays
             m_ctorVarsVec.push_back(nodep);
