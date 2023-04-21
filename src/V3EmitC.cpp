@@ -2734,6 +2734,16 @@ void EmitCImp::emitSettleLoop(const std::string& eval_call, bool initial) {
 }
 
 void EmitCImp::emitWrapEval(AstNodeModule* modp) {
+    /* The eval function runs the main loop to evaluate signals until 
+     * the system is stable. By adding code here before the function definition,
+     * it gets put in the global scope. */
+    if (v3Global.opt.fault_injection()) { //fi
+        puts("QData fi_object::injection_time = 0;\n");
+        puts("QData fi_object::release_time = 0;\n");
+        puts("CData fi_object::faulty_value = 0;\n");
+        puts("std::string fi_object::injection_location = \"\";\n");
+    }
+
     puts("\nvoid " + prefixNameProtect(modp) + "::eval_step() {\n");
     puts("VL_DEBUG_IF(VL_DBG_MSGF(\"+++++TOP Evaluate " + prefixNameProtect(modp)
          + "::eval\\n\"); );\n");
