@@ -3129,7 +3129,6 @@ void EmitCImp::emitInt(AstNodeModule* modp) {
         puts("      return m_name;\n");
         puts("    }\n");
         puts("\n");
-        puts("    // inline operator QData() const { return m_value; }  \n");
         puts("    inline operator CData() const { return m_value; }    \n");
         puts("    inline unsigned char c_str() { return static_cast<unsigned char>(m_value); }\n");
         puts("    inline CData get_value() { return m_value; }\n");
@@ -3142,7 +3141,7 @@ void EmitCImp::emitInt(AstNodeModule* modp) {
         puts("          static bool runOnce = true;\n");
         puts("\n");
         puts("          if (VL_TIME_Q() >= fi_object::injection_time && VL_TIME_Q() < fi_object::release_time) {\n");
-        puts("            m_value = 0;//fi_object::faulty_value;\n");
+        puts("            m_value = fi_object::faulty_value;\n");
         puts("            if (runOnce == true) {\n");
         puts("              std::cout << \"Injecting specified fault at signal\" << m_name << \" during [\" << fi_object::injection_time << \",\" << fi_object::release_time << \"]\";\n");
         puts("              runOnce = false;\n");
