@@ -1924,6 +1924,32 @@ void EmitCStmts::emitVarDecl(const AstVar* nodep, const string& prefixIfImp) {
         puts("," + cvtToStr(basicp->lo() + nodep->width() - 1) + "," + cvtToStr(basicp->lo()));
         if (nodep->isWide()) puts("," + cvtToStr(nodep->widthWords()));
         puts(");\n");
+    } else if (v3Global.opt.fault_injection()) {//fi
+        /* We want to wrap only the local signals of datatype CData in the fi_object. */
+        std::string av_name = nodep->name();
+        std::string last_char=  nodep->vlArgType(true, false, false, prefixIfImp);
+        std::string av_name_prefix = av_name.substr(0,11);
+        std::string av_name_prefix2 = av_name.substr(0,12);
+        std::string av_name_prefix3 = av_name.substr(0,7);
+        std::string av_name_prefix4 = av_name.substr(0,6);
+        bool local_variable = (av_name_prefix == "__VinpClk__" || av_name_prefix2 == "__Vclklast__" 
+                            || av_name_prefix2 == "__Vchglast__" || av_name == "__Vm_traceActivity" 
+                            || av_name_prefix3=="__Vtemp" || av_name_prefix4=="__Vdly" 
+                            || av_name_prefix4=="__Vilp");
+
+        if (v3Global.opt.fault_injection() && !local_variable && nodep->widthMin() <= 8 && last_char.substr(last_char.length()-1)!="]"  ){ //dummy solution to avoid multidimensional arrays
+            m_ctorVarsVec.push_back(nodep);
+            puts("fi_object ");
+            puts( nodep->nameProtect());
+        } else { 
+            puts(nodep->vlArgType(true, false, false, prefixIfImp));
+            puts(";\n");
+        }	
+        
+        if (v3Global.opt.fault_injection() && !local_variable && !nodep->isWide()) {
+            puts(";\n");
+        }
+    
     } else {
         // strings and other fundamental c types
         if (nodep->isFuncLocal() && nodep->isString()) {
