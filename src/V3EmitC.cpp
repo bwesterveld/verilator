@@ -3144,7 +3144,7 @@ void EmitCImp::emitInt(AstNodeModule* modp) {
         puts("          if (VL_TIME_Q() >= fi_object::injection_time && VL_TIME_Q() < fi_object::release_time) {\n");
         puts("            m_value = 0;//fi_object::faulty_value;\n");
         puts("            if (runOnce == true) {\n");
-        puts("              std::cout << \"Injecting stuck-at-0 fault at signal\" << m_name << \" during [\" << fi_object::injection_time << \",\" << fi_object::release_time << \"]\";\n");
+        puts("              std::cout << \"Injecting specified fault at signal\" << m_name << \" during [\" << fi_object::injection_time << \",\" << fi_object::release_time << \"]\";\n");
         puts("              runOnce = false;\n");
         puts("            }\n");
         puts("          }\n");
