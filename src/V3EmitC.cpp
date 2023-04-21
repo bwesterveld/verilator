@@ -3000,22 +3000,27 @@ void EmitCStmts::emitSortedVarList(const VarVec& anons, const VarVec& nonanons,
             puts("// Anonymous structures to workaround compiler member-count bugs\n");
         auto it = anons.cbegin();
         for (int l3 = 0; l3 < anonL3s && it != anons.cend(); ++l3) {
-            if (anonL3s != 1) puts("struct {\n");
-            for (int l2 = 0; l2 < anonL2s && it != anons.cend(); ++l2) {
-                if (anonL2s != 1) puts("struct {\n");
-                for (int l1 = 0; l1 < anonL1s && it != anons.cend(); ++l1) {
-                    if (anonL1s != 1) puts("struct {\n");
-                    for (int l0 = 0; l0 < lim && it != anons.cend(); ++l0) {
-                        const AstVar* varp = *it;
-                        emitVarCmtChg(varp, &curVarCmt);
-                        emitVarDecl(varp, prefixIfImp);
-                        ++it;
+            /* It is not possible to use an anonymous struct in combination with the
+             * fi_object, so we don't use it when the fi flag is supplied.
+             */
+            if (!v3Global.opt.fault_injection()) {//fi
+                if (anonL3s != 1) puts("struct {\n");
+                for (int l2 = 0; l2 < anonL2s && it != anons.cend(); ++l2) {
+                    if (anonL2s != 1) puts("struct {\n");
+                    for (int l1 = 0; l1 < anonL1s && it != anons.cend(); ++l1) {
+                        if (anonL1s != 1) puts("struct {\n");
+                        for (int l0 = 0; l0 < lim && it != anons.cend(); ++l0) {
+                            const AstVar* varp = *it;
+                            emitVarCmtChg(varp, &curVarCmt);
+                            emitVarDecl(varp, prefixIfImp);
+                            ++it;
+                        }
+                        if (anonL1s != 1) puts("};\n");
                     }
-                    if (anonL1s != 1) puts("};\n");
+                    if (anonL2s != 1) puts("};\n");
                 }
-                if (anonL2s != 1) puts("};\n");
+                if (anonL3s != 1) puts("};\n");
             }
-            if (anonL3s != 1) puts("};\n");
         }
         // Leftovers, just in case off by one error somewhere above
         for (; it != anons.end(); ++it) {
