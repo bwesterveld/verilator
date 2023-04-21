@@ -3095,6 +3095,17 @@ void EmitCImp::emitIntTop(AstNodeModule*) {
 
 void EmitCImp::emitInt(AstNodeModule* modp) {
     puts("\n//==========\n\n");
+
+    /*
+     * This ends up at the top of the header file. It needs the
+     * iostream import to have the fi_object print to the console
+     * when a fault was injected.
+     */
+    if (v3Global.opt.fault_injection()) { //fi
+        puts("#include <iostream>\n");
+        puts("\n");
+    }
+
     emitModCUse(modp, VUseType::INT_INCLUDE);
 
     // Declare foreign instances up front to make C++ happy
